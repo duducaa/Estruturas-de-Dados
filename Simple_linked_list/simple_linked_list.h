@@ -56,49 +56,66 @@ int show(S_linked_list *sll) {
     return 0;
 }
 
-int insert_before(S_linked_list *sll, tp_sll value) {
+int insert_first(S_linked_list *sll, tp_sll value) {
     Node *node = (Node *) malloc(sizeof(Node));
     node -> data = value;
-    node -> next = sll -> head;
+    node -> next = NULL;
 
-    if (is_empty(sll)) sll -> tail = node;
-    sll -> head = node;
-
-    sll -> size++;
+    sll -> head = sll -> tail = node;
 
     return 0;
 }
 
+int insert_before(S_linked_list *sll, tp_sll value) {
+    if (is_empty(sll)) insert_first(sll, value);
+    else {
+        Node *node = (Node *) malloc(sizeof(Node));
+        node -> data = value;
+        node -> next = sll -> head;
+
+        sll -> head = node;
+
+        sll -> size++;
+    }
+}
+
 int insert_after(S_linked_list *sll, tp_sll value) {
-    Node *node = (Node *) malloc(sizeof(Node));
-    node -> data = value;
+    if (is_empty(sll)) insert_first(sll, value);
+    else {
+        Node *node = (Node *) malloc(sizeof(Node));
+        node -> data = value;
 
-    if (is_empty(sll)) sll -> head = node;
-    else sll -> tail -> next = node;
-    sll -> tail = node;
+        sll -> tail -> next = node;
+        sll -> tail = node;
 
-    sll -> size++;
+        sll -> size++;
+    }
 
     return 0;
 }
 
 int insert_ordered(S_linked_list *sll, tp_sll value) {
-    if (is_empty(sll) || sll -> head -> data >= value) insert_before(sll, value);
-    else if (sll -> tail -> data < value) insert_after(sll, value);
+    if (is_empty(sll)) insert_first(sll, value);
     else {
-        Node *aux1, *aux2;
-        aux1 = sll -> head;
-        aux2 = aux1 -> next;
-        while (aux2 -> data <= value && aux2 -> next != NULL) {
-            aux1 = aux2;
-            aux2 = aux2 -> next;
-        }
-        Node *node = (Node *) malloc(sizeof(Node));
-        node -> data = value;
-        node -> next = aux2;
-        aux1 -> next = node;
+        if (sll -> head -> data >= value) insert_before(sll, value);
+        else if (sll -> tail -> data < value) insert_after(sll, value);
+        else {
+            Node *aux1, *aux2;
+            aux1 = sll -> head;
+            aux2 = aux1 -> next;
 
-        sll -> size++;
+            while (aux2 -> data <= value && aux2 -> next != NULL) {
+                aux1 = aux2;
+                aux2 = aux2 -> next;
+            }
+            
+            Node *node = (Node *) malloc(sizeof(Node));
+            node -> data = value;
+            node -> next = aux2;
+            aux1 -> next = node;
+
+            sll -> size++;
+        }
     }
 
     return 0;
