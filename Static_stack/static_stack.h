@@ -1,3 +1,6 @@
+#ifndef STATIC_STACK_H
+#define STATIC_STACK_H
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -45,7 +48,7 @@ int push(Static_stack *ss, tp_stack value) {
 }
 
 int pop(Static_stack *ss) {
-    if (is_full(ss)) return -1;
+    if (is_empty(ss)) return -1;
 
     tp_stack value;
 
@@ -53,3 +56,11 @@ int pop(Static_stack *ss) {
 
     return value;
 }
+
+int clear_stack(Static_stack *ss) {
+    while (!is_empty(ss)) pop(ss);
+
+    return 0;
+}
+
+#endif
