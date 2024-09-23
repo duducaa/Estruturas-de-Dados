@@ -66,7 +66,7 @@ int insert_first(S_linked_list *sll, tp_sll value) {
     return 0;
 }
 
-int insert_before(S_linked_list *sll, tp_sll value) {
+int insert_start(S_linked_list *sll, tp_sll value) {
     if (is_empty(sll)) insert_first(sll, value);
     else {
         Node *node = (Node *) malloc(sizeof(Node));
@@ -79,7 +79,7 @@ int insert_before(S_linked_list *sll, tp_sll value) {
     }
 }
 
-int insert_after(S_linked_list *sll, tp_sll value) {
+int insert_end(S_linked_list *sll, tp_sll value) {
     if (is_empty(sll)) insert_first(sll, value);
     else {
         Node *node = (Node *) malloc(sizeof(Node));
@@ -97,8 +97,8 @@ int insert_after(S_linked_list *sll, tp_sll value) {
 int insert_ordered(S_linked_list *sll, tp_sll value) {
     if (is_empty(sll)) insert_first(sll, value);
     else {
-        if (sll -> head -> data >= value) insert_before(sll, value);
-        else if (sll -> tail -> data < value) insert_after(sll, value);
+        if (sll -> head -> data >= value) insert_start(sll, value);
+        else if (sll -> tail -> data < value) insert_end(sll, value);
         else {
             Node *aux1, *aux2;
             aux1 = sll -> head;
@@ -121,8 +121,18 @@ int insert_ordered(S_linked_list *sll, tp_sll value) {
     return 0;
 }
 
-int remove_before(S_linked_list *sll) {
+int remove_last(S_linked_list *sll) {
+    Node *trash = sll -> head;
+    int value = trash -> data;
+    sll -> head = sll -> tail = NULL;
+    free(trash);
+
+    return value;
+}
+
+int remove_start(S_linked_list *sll) {
     if (is_empty(sll)) return -1;
+    else if (sll -> size == 1) return remove_last(sll);
     else {
         Node *trash = sll -> head;
         int value = trash -> data;
@@ -134,8 +144,9 @@ int remove_before(S_linked_list *sll) {
     }
 }
 
-int remove_after(S_linked_list *sll) {
+int remove_end(S_linked_list *sll) {
     if (is_empty(sll)) return -1;
+    else if (sll -> size == 1) return remove_last(sll);
     else {
         Node *aux1, *aux2;
         aux1 = NULL;
@@ -159,6 +170,7 @@ int remove_after(S_linked_list *sll) {
 
 tp_sll remove_between(S_linked_list *sll, tp_sll value) {
     if (is_empty(sll)) return -1;
+    else if (sll -> size == 1) return remove_last(sll);
     else {
         Node *aux1, *aux2;
         aux1 = NULL;

@@ -5,30 +5,20 @@
 
 int main() {
 
-    srand(time(NULL));
-
     S_linked_list *sll = init_sl_list();
-    
-    int x;
-    for (int i = 0; i < 10; i++) insert_ordered(sll, rand() % 10 + 1);
-    show(sll);
 
+    insert_end(sll, 5);
+    insert_end(sll, 7);
+    insert_start(sll, 10);
+    insert_ordered(sll, 8);
+
+    show(sll);
+    printf("Start: %i\n", remove_start(sll));
+    printf("End: %i\n", remove_end(sll));
+    printf("Between: %i\n", remove_between(sll, 5));
     printf("Size: %i\n", get_size(sll));
-
-    Node *s = search(sll, 5);
-    if (s == NULL) printf("Not found\n");
-    else printf("Found: %i\n", s -> data);
-
-    int trash;
-    for (int i = 0; i < 10; i++) remove_after(sll);
+    remove_end(sll);
     show(sll);
-
-    remove_between(sll, 3);
-    show(sll);
-
-    clear(sll);
-
-    printf("%i\n", get_size(sll));
 
     return 0;
 
